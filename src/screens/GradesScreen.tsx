@@ -14,7 +14,7 @@ type Tab =
   | "Домашна р.";
 
 export default function GradesScreen() {
-  const [activeTab, setActiveTab] = useState<Tab>("Оценки");
+  const [activeTab] = useState<Tab>("Оценки");
   const [termOpen, setTermOpen] = useState(false);
 const [term, setTerm] = useState<"Първи срок" | "Втори срок">(
   "Първи срок"

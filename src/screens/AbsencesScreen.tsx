@@ -12,7 +12,7 @@ type Tab =
   | "Домашна р.";
 
 export default function AbsencesScreen() {
-  const [activeTab, setActiveTab] = useState<Tab>("Отсъствия");
+  const [activeTab] = useState<Tab>("Отсъствия");
   const [term, setTerm] = useState<Term>("Първи срок");
   const [termOpen, setTermOpen] = useState(false);
 
