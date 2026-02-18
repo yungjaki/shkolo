@@ -29,10 +29,10 @@ export default function SubjectDetailsScreen({
         <Section title="ВТОРИ СРОК">
           <GradeRow
             value={6}
-            title="Устно изпитване"
-            date="09.02.2026"
-            teacher="Ивайло Иванов"
-            timestamp="09.02.2026 12:27:49"
+            title="Активно Участие"
+            date="18.02.2026"
+            teacher="Марина Петрова"
+            timestamp="18.02.2026 08:16:29"
             subject={subject}
           />
         </Section>
