@@ -3,8 +3,7 @@ import SubjectGradesRow from "../components/SubjectGradesRow";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { gradesData } from "../data/grades";
 import type { Term } from "../data/grades";
-
-
+import SubjectDetailsScreen from "./SubjectDetailsScreen";
 
 type Tab =
   | "Отсъствия"
@@ -17,117 +16,64 @@ type View =
   | { type: "list" }
   | { type: "subject"; subject: string };
 
-const [view, setView] = useState<View>({ type: "list" });
-
 export default function GradesScreen() {
   const [activeTab] = useState<Tab>("Оценки");
+
+  const [term, setTerm] = useState<Term>("Втори срок");
   const [termOpen, setTermOpen] = useState(false);
-const [term, setTerm] = useState<"Първи срок" | "Втори срок">(
-  "Втори срок"
-);
 
-return (
-  <>
+  const [view, setView] = useState<View>({ type: "list" });
 
-    {activeTab === "Оценки" && (
-      <button
-        onClick={() => setTermOpen(true)}
-        className="w-full bg-appBg px-4 py-3 flex items-center justify-between"
-      >
-        <span className="text-sm font-medium text-textSecondary">
-          {term}
-        </span>
-        <ChevronDownIcon className="w-5 h-5 text-textSecondary" />
-      </button>
-    )}
-
-    <div className="relative overflow-hidden">
-      <AnimatedTab active={activeTab} term={term} />
-    </div>
-
-    {/* ✅ THIS WAS MISSING */}
-    {termOpen && (
-      <TermDropdown
-        selected={term}
-        onSelect={(t) => {
-          setTerm(t);
-          setTermOpen(false);
-        }}
-        onClose={() => setTermOpen(false)}
+  // ✅ SUBJECT DETAILS VIEW
+  if (view.type === "subject") {
+    return (
+      <SubjectDetailsScreen
+        subject={view.subject}
+        onBack={() => setView({ type: "list" })}
       />
-    )}
-  </>
-);
+    );
+  }
 
-}
-
-function AnimatedTab({
-  active,
-  term,
-}: {
-  active: string;
-  term: Term;
-}) {
-  return (
-    <div key={active + term} className="animate-tabFade bg-white pb-20">
-      {active === "Оценки" &&
-        gradesData.map((item) => (
-        <SubjectGradesRow
-          subject={subject}
-          grades={grades}
-          onClick={() =>
-            setView({ type: "subject", subject })
-          }
-        />
-        ))}
-
-      {active !== "Оценки" && (
-        <div className="p-6 text-center text-textSecondary">
-          {active} (предстои)
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-function TermDropdown({
-  selected,
-  onSelect,
-  onClose,
-}: {
-  selected: "Първи срок" | "Втори срок";
-  onSelect: (t: "Първи срок" | "Втори срок") => void;
-  onClose: () => void;
-}) {
   return (
     <>
-      {/* Dim background */}
-      <div
-        onClick={onClose}
-        className="fixed inset-0 bg-black/20 z-40"
-      />
+      {/* Term selector */}
+      {activeTab === "Оценки" && (
+        <button
+          onClick={() => setTermOpen(true)}
+          className="w-full bg-appBg px-4 py-3 flex items-center justify-between border-b border-divider"
+        >
+          <span className="text-[15px] font-medium text-appBlue">
+            {term}
+          </span>
+          <ChevronDownIcon className="w-5 h-5 text-textMuted" />
+        </button>
+      )}
 
-      {/* Dropdown panel */}
-      <div className="fixed top-[110px] left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 px-4">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden animate-slideDown">
-          {["Първи срок", "Втори срок"].map((t) => (
-            <button
-              key={t}
-              onClick={() => onSelect(t as any)}
-              className={`w-full px-4 py-3 text-left text-sm ${
-                selected === t
-                  ? "bg-appBg font-medium"
-                  : ""
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
+      {/* Grades list */}
+      <div className="bg-white pb-20">
+        {gradesData.map((item) => (
+          <SubjectGradesRow
+            key={item.subject}
+            subject={item.subject}
+            grades={item.gradesByTerm[term]}
+            onClick={() =>
+              setView({ type: "subject", subject: item.subject })
+            }
+          />
+        ))}
       </div>
-      
+
+      {/* Term dropdown */}
+      {termOpen && (
+        <TermDropdown
+          selected={term}
+          onSelect={(t) => {
+            setTerm(t);
+            setTermOpen(false);
+          }}
+          onClose={() => setTermOpen(false)}
+        />
+      )}
     </>
   );
 }
-
