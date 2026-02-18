@@ -13,6 +13,12 @@ type Tab =
   | "Разписание"
   | "Домашна р.";
 
+type View =
+  | { type: "list" }
+  | { type: "subject"; subject: string };
+
+const [view, setView] = useState<View>({ type: "list" });
+
 export default function GradesScreen() {
   const [activeTab] = useState<Tab>("Оценки");
   const [termOpen, setTermOpen] = useState(false);
