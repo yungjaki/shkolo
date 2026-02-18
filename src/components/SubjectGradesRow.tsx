@@ -4,13 +4,21 @@ import GradeBubble from "./GradeBubble";
 type Props = {
   subject: string;
   grades: number[];
+  onClick?: () => void;
 };
 
-export default function SubjectGradesRow({ subject, grades }: Props) {
+export default function SubjectGradesRow({
+  subject,
+  grades,
+  onClick,
+}: Props) {
   const hasGrades = grades.length > 0;
 
   return (
-    <div className="px-4 h-[78px] flex flex-col justify-center border-b border-divider bg-white">
+    <button
+      onClick={onClick}
+      className="w-full text-left px-4 h-[78px] flex flex-col justify-center border-b border-divider bg-white"
+    >
       {/* Subject title */}
       <div className="flex items-center gap-2">
         <BookOpenIcon className="w-[18px] h-[18px] text-textMuted" />
@@ -33,6 +41,6 @@ export default function SubjectGradesRow({ subject, grades }: Props) {
           </span>
         )}
       </div>
-    </div>
+    </button>
   );
 }
