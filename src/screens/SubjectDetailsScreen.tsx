@@ -1,66 +1,84 @@
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import GradeRow from "../components/GradeRow";
+import { useState } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import GradeBubble from "../components/GradeBubble";
+import type { SubjectGrades, Grade } from "../data/grades";
 
 export default function SubjectDetailsScreen({
-  subject,
-  onBack,
+  data,
 }: {
-  subject: string;
-  onBack: () => void;
+  data: SubjectGrades;
 }) {
+  const [openGrades, setOpenGrades] = useState<Record<string, boolean>>({
+    v1: true,
+  });
+
   return (
-    <>
-      {/* Header */}
-      <header className="bg-appBlue">
-        <div className="h-[44px]" />
-        <div className="h-[44px] px-4 flex items-center gap-2">
-          <button onClick={onBack}>
-            <ChevronLeftIcon className="w-6 h-6 text-white" />
-          </button>
-          <span className="text-[15px] font-semibold text-white truncate">
-            {subject}
-          </span>
+    <div className="bg-white pb-20">
+      {/* YEARLY GRADE */}
+      <div className="px-4 py-3 border-b border-divider text-[14px] text-textSecondary">
+        ГОДИШНА ОЦЕНКА
+      </div>
+
+      {data.yearlyGrade && (
+        <div className="px-4 py-3 border-b border-divider flex justify-end">
+          <GradeBubble value={data.yearlyGrade} />
         </div>
-      </header>
+      )}
 
-      {/* Content */}
-      <div className="bg-white">
-        {/* Second term */}
-        <Section title="ВТОРИ СРОК">
-          <GradeRow
-            value={6}
-            title="Активно Участие"
-            date="18.02.2026"
-            teacher="Марина Петрова"
-            timestamp="18.02.2026 08:16:29"
-            subject={subject}
-          />
-        </Section>
+      {data.terms.map((term) => (
+        <div key={term.term}>
+          {/* TERM HEADER */}
+          <div className="px-4 py-2 text-[14px] font-medium text-primary">
+            {term.term.toUpperCase()}
+          </div>
 
-        {/* First term */}
-        <Section title="ПЪРВИ СРОК">
-          <GradeRow value={6} title="Практическо изпитване" date="26.01.2026" />
-          <GradeRow value={6} title="Практическо изпитване" date="08.12.2025" />
-          <GradeRow value={6} title="Практическо изпитване" date="13.10.2025" />
-        </Section>
-      </div>
-    </>
-  );
-}
+          {term.grades.map((grade) => {
+            const isOpen = openGrades[grade.id];
 
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <div className="bg-appBg px-4 py-2 text-[13px] font-semibold text-appBlue">
-        {title}
-      </div>
-      {children}
-    </>
+            return (
+              <div key={grade.id} className="border-b border-divider">
+                {/* GRADE ROW */}
+                <button
+                  onClick={() =>
+                    setOpenGrades((s) => ({
+                      ...s,
+                      [grade.id]: !s[grade.id],
+                    }))
+                  }
+                  className="w-full px-4 py-3 flex items-center gap-3"
+                >
+                  <GradeBubble value={grade.value} />
+
+                  <div className="flex-1 text-left">
+                    <div className="text-[15px] font-medium">
+                      {grade.type}
+                    </div>
+                    <div className="text-[13px] text-textMuted flex items-center gap-1">
+                      📅 {grade.date}
+                    </div>
+                  </div>
+
+                  {isOpen ? (
+                    <ChevronUpIcon className="w-5 h-5 text-textMuted" />
+                  ) : (
+                    <ChevronDownIcon className="w-5 h-5 text-textMuted" />
+                  )}
+                </button>
+
+                {/* DETAILS */}
+                {isOpen && (
+                  <div className="px-4 pb-3 text-[13px] text-textSecondary space-y-1">
+                    <div>Оценка: {grade.value}.00</div>
+                    <div>От: {grade.teacher}</div>
+                    <div>На: {grade.createdAt}</div>
+                    <div>Предмет: {data.subject}</div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </div>
   );
 }
