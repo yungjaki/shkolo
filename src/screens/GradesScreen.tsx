@@ -17,7 +17,7 @@ export default function GradesScreen() {
   const [activeTab] = useState<Tab>("Оценки");
   const [termOpen, setTermOpen] = useState(false);
 const [term, setTerm] = useState<"Първи срок" | "Втори срок">(
-  "Първи срок"
+  "Втори срок"
 );
 
 return (
