@@ -77,3 +77,41 @@ export default function GradesScreen() {
     </>
   );
 }
+
+function TermDropdown({
+  selected,
+  onSelect,
+  onClose,
+}: {
+  selected: Term;
+  onSelect: (t: Term) => void;
+  onClose: () => void;
+}) {
+  return (
+    <>
+      {/* Dim background */}
+      <div
+        onClick={onClose}
+        className="fixed inset-0 bg-black/20 z-40"
+      />
+
+      {/* Dropdown panel */}
+      <div className="fixed top-[110px] left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 px-4">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden animate-slideDown">
+          {(["Втори срок", "Първи срок"] as Term[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => onSelect(t)}
+              className={`w-full px-4 py-3 text-left text-[15px] ${
+                selected === t ? "bg-appBg font-medium" : ""
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
