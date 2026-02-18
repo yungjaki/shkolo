@@ -72,11 +72,13 @@ function AnimatedTab({
     <div key={active + term} className="animate-tabFade bg-white pb-20">
       {active === "Оценки" &&
         gradesData.map((item) => (
-          <SubjectGradesRow
-            key={item.subject}
-            subject={item.subject}
-            grades={item.gradesByTerm[term]}
-          />
+        <SubjectGradesRow
+          subject={subject}
+          grades={grades}
+          onClick={() =>
+            setView({ type: "subject", subject })
+          }
+        />
         ))}
 
       {active !== "Оценки" && (
