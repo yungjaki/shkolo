@@ -30,6 +30,11 @@ export const gradesData: SubjectGrades[] = [
         current: [5, 4, 2, 2, 2, 3].map(g),
         termGrade: 3,
       },
+            {
+        term: "Втори срок",
+        current: [6].map(g),
+        termGrade: 0,
+      },
     ],
   },
   {
@@ -49,6 +54,11 @@ export const gradesData: SubjectGrades[] = [
         term: "Първи срок",
         current: [3, 2, 3, 3].map(g),
         termGrade: 3,
+      },
+            {
+        term: "Втори срок",
+        current: [5].map(g),
+        termGrade: 0,
       },
     ],
   },
