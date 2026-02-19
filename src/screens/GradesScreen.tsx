@@ -25,14 +25,19 @@ export default function GradesScreen() {
   const [view, setView] = useState<View>({ type: "list" });
 
   // ✅ SUBJECT DETAILS VIEW
-  if (view.type === "subject") {
-    return (
-      <SubjectDetailsScreen
-        subject={view.subject}
-        onBack={() => setView({ type: "list" })}
-      />
-    );
-  }
+if (view.type === "subject") {
+  const subjectData = gradesData.find(
+    (s) => s.subject === view.subject
+  );
+
+  if (!subjectData) return null;
+
+  return (
+    <SubjectDetailsScreen
+      data={subjectData}
+    />
+  );
+}
 
   return (
     <>
@@ -55,7 +60,10 @@ export default function GradesScreen() {
           <SubjectGradesRow
             key={item.subject}
             subject={item.subject}
-            grades={item.gradesByTerm[term]}
+            grades={
+  item.terms.find((t) => t.term === term)?.grades ?? []
+}
+
             onClick={() =>
               setView({ type: "subject", subject: item.subject })
             }

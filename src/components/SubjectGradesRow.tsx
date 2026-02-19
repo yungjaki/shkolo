@@ -1,9 +1,11 @@
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import GradeBubble from "./GradeBubble";
+import type { Grade } from "../data/grades";
+
 
 type Props = {
   subject: string;
-  grades: number[];
+  grades: Grade[];
   onClick?: () => void;
 };
 
@@ -31,9 +33,9 @@ export default function SubjectGradesRow({
       <div className="mt-1 ml-[26px]">
         {hasGrades ? (
           <div className="flex gap-2 flex-wrap">
-            {grades.map((g, i) => (
-              <GradeBubble key={i} value={g} />
-            ))}
+{grades.map((g) => (
+  <GradeBubble key={g.id} value={g.value} />
+))}
           </div>
         ) : (
           <span className="text-[14px] text-textMuted">
