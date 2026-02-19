@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import GradeBubble from "../components/GradeBubble";
-import type { SubjectGrades, Grade } from "../data/grades";
+import type { SubjectGrades } from "../data/grades";
+
 
 export default function SubjectDetailsScreen({
   data,
