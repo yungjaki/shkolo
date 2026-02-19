@@ -3,29 +3,15 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import GradeBubble from "../components/GradeBubble";
 import type { SubjectGrades } from "../data/grades";
 
-
 export default function SubjectDetailsScreen({
   data,
 }: {
   data: SubjectGrades;
 }) {
-  const [openGrades, setOpenGrades] = useState<Record<string, boolean>>({
-    v1: true,
-  });
+  const [openGrades, setOpenGrades] = useState<Record<string, boolean>>({});
 
   return (
     <div className="bg-white pb-20">
-      {/* YEARLY GRADE */}
-      <div className="px-4 py-3 border-b border-divider text-[14px] text-textSecondary">
-        ГОДИШНА ОЦЕНКА
-      </div>
-
-      {data.yearlyGrade && (
-        <div className="px-4 py-3 border-b border-divider flex justify-end">
-          <GradeBubble value={data.yearlyGrade} />
-        </div>
-      )}
-
       {data.terms.map((term) => (
         <div key={term.term}>
           {/* TERM HEADER */}
@@ -33,12 +19,11 @@ export default function SubjectDetailsScreen({
             {term.term.toUpperCase()}
           </div>
 
-          {term.grades.map((grade) => {
+          {term.current.map((grade) => {
             const isOpen = openGrades[grade.id];
 
             return (
               <div key={grade.id} className="border-b border-divider">
-                {/* GRADE ROW */}
                 <button
                   onClick={() =>
                     setOpenGrades((s) => ({
@@ -52,10 +37,7 @@ export default function SubjectDetailsScreen({
 
                   <div className="flex-1 text-left">
                     <div className="text-[15px] font-medium">
-                      {grade.type}
-                    </div>
-                    <div className="text-[13px] text-textMuted flex items-center gap-1">
-                      📅 {grade.date}
+                      Текуща оценка
                     </div>
                   </div>
 
@@ -66,18 +48,26 @@ export default function SubjectDetailsScreen({
                   )}
                 </button>
 
-                {/* DETAILS */}
                 {isOpen && (
-                  <div className="px-4 pb-3 text-[13px] text-textSecondary space-y-1">
+                  <div className="px-4 pb-3 text-[13px] text-textSecondary">
                     <div>Оценка: {grade.value}.00</div>
-                    <div>От: {grade.teacher}</div>
-                    <div>На: {grade.createdAt}</div>
                     <div>Предмет: {data.subject}</div>
+                    <div>Срок: {term.term}</div>
                   </div>
                 )}
               </div>
             );
           })}
+
+          {/* TERM GRADE */}
+          {term.termGrade && (
+            <div className="px-4 py-3 border-b border-divider flex justify-between items-center bg-appBg">
+              <span className="text-[14px] text-textSecondary">
+                Срочна оценка
+              </span>
+              <GradeBubble value={term.termGrade} />
+            </div>
+          )}
         </div>
       ))}
     </div>

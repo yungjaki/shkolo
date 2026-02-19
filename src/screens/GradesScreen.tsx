@@ -61,7 +61,7 @@ if (view.type === "subject") {
             key={item.subject}
             subject={item.subject}
             grades={
-  item.terms.find((t) => t.term === term)?.grades ?? []
+  item.terms.find((t) => t.term === term)?.current ?? []
 }
 
             onClick={() =>
