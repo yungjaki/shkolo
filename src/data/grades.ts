@@ -57,7 +57,7 @@ export const gradesData: SubjectGrades[] = [
       },
             {
         term: "Втори срок",
-        current: [6].map(g),
+        current: [5].map(g),
         termGrade: 0,
       },
     ],
